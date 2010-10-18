@@ -1,0 +1,54 @@
+This class allows one to define a template for the entire site and then have page specific bodies.
+
+
+A class can be defined for your site, such as:
+``
+<?php defined('SYSPATH') or die('No direct script access.');
+
+abstract class MIPSMaster extends Controller_Mastertemplate {
+	private $tpu_config;
+	
+	public function __construct(Request $request){
+		parent::__construct($request);
+	}
+	
+	function before(){
+		parent::before();
+		$config = Kohana::config('myconf');
+		
+		$this->_master->styles['/css/main.css'] = 'screen';
+		$this->_master->scripts[] = '/js/jquery.js';
+		$this->_master->site_name = Kohana::config('site.name');
+
+		$title = Kohana::message($this->request->controller, $this->request->action . '.title');
+		if(strlen($title) === 0){
+			$title = Kohana::message($this->request->controller, $this->request->_action_requested . '.title');
+		}
+		$this->_master->title = $title;
+		$this->_master->events = array();
+	}
+	
+	function after(){
+		parent::after();
+	}
+}
+``
+
+then a controller can extend the previous class and have the template and body already found
+
+``
+<?php defined('SYSPATH') or die('No direct script access.');
+
+class Controller_Welcome extends MIPSMaster {
+
+	public function action_index(){
+		$this->_template->message = "Hi!";
+	}
+}
+``
+
+And a view (views/welcome/action_index.php)
+
+``
+<?php echo $message ?>
+``

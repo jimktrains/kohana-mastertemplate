@@ -8,7 +8,7 @@ abstract class Controller_MasterTemplate extends Controller {
 	// To be used later
 	protected $_allowed = array();
 	
-	protected $_master_vars = array('title', 'styles', 'scripts', 'metas', 'httpequivs', 'body', 'links');
+	protected $_master_vars = array('title', 'styles', 'scripts', 'metas', 'httpequivs', 'body', 'links', 'js_text');
 	
 	public function __construct(Request $request){
 		parent::__construct($request);
@@ -42,6 +42,8 @@ abstract class Controller_MasterTemplate extends Controller {
 			$this->_master->httpequivs = array();
 			$this->_master->links = array();
 			$this->_master->body = "";
+			$this->_master->js_text = "";
+			
 		}
 	}
 
